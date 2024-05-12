@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import SideBar from "./components/SideBar";
+import IntroductoryElement from "./components/IntroductoryElement";
+import InputArea from "./components/InputArea";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      <div className="app-outline">
+        <div className="app-sidebar">
+          <SideBar />
+        </div>
+        <div className="app-content">
+          <div className="app-section">
+            <IntroductoryElement />
+          </div>
+          <div className="app-input-area">
+            <InputArea />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
