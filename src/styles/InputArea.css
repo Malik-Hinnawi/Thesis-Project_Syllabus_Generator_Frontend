@@ -1,0 +1,78 @@
+.input-area-container {
+  width: 84%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .roboto-regular {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+}
+
+.input-area-text {
+  align-self: flex-start;
+  color: #087f5b;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.input-area-container textarea {
+  width: 840px;
+  height: 38px;
+  padding: 6px 6px;
+  border: none;
+  border-radius: 4px;
+}
+
+.input-area-outline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.input-area-button {
+  width: 72px;
+  padding: 10px 4px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-area-button ion-icon {
+  font-size: 18px;
+}
+
+.submit-button {
+  background-color: #087f5b;
+}
+
+.submit-button:hover,
+.submit-button:active {
+  background-color: #007753;
+}
+
+.submit-button ion-icon {
+  color: #ffffff;
+}
+
+.attach-button,
+.upload-button {
+  background-color: #ffffff;
+}
+
+.attach-button:hover,
+.attach-button:active,
+.upload-button:hover,
+.upload-button:active {
+  background-color: #e6fcf5;
+}
+
+.attach-button ion-icon,
+.upload-button ion-icon {
+  color: #087f5b;
+}
