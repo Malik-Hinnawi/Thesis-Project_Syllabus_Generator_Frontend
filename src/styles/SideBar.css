@@ -34,6 +34,7 @@
   justify-content: center;
   align-items: center;
   gap: 24px;
+  transition: all 0.3s;
 }
 
 .sidebar-button {
@@ -42,6 +43,7 @@
   border: none;
   cursor: pointer;
   border-radius: 4px;
+  transition: all 0.3s;
 }
 
 .new-chat-button {
@@ -54,9 +56,14 @@
   background-color: #dcf2eb;
 }
 
+.new-chat-button ion-icon {
+  font-size: 18px;
+}
+
 .delete-chat-button {
   background-color: #ffe3e3;
   color: #f03e3e;
+  border: none;
 }
 
 .delete-chat-button:hover,
@@ -64,6 +71,6 @@
   background-color: #f5d9d9;
 }
 
-/* .sidebar-button ion-icon {
-  color: #000000;
+/* .delete-chat-button ion-icon {
+  color: #f03e3e;
 } */

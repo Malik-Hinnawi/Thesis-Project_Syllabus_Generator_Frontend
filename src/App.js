@@ -2,6 +2,7 @@ import "./App.css";
 import SideBar from "./components/SideBar";
 import IntroductoryElement from "./components/IntroductoryElement";
 import InputArea from "./components/InputArea";
+import CurrentChat from "./components/CurrentChat";
 
 function App() {
   return (
