@@ -26,18 +26,6 @@
 .app-content {
   background-color: #e9ecef;
   height: 100vh;
-  display: grid;
-  grid-template-rows: 5fr 1fr;
-}
-
-.app-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.app-input-area {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* display: grid; */
+  /* grid-template-rows: 5fr 1fr; */
 }

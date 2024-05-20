@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import IntroductoryElement from "./IntroductoryElement";
 import "../styles/SyllaBot.css"; // Assuming you have some CSS for styling
 
 const SyllaBot = () => {
@@ -26,11 +27,8 @@ const SyllaBot = () => {
   return (
     <div className="chat-container">
       {showIntro ? (
-        <div className="intro">
-          <div className="intro-logo">
-            <img src="logo.png" alt="SyllaBot Logo" />
-          </div>
-          <h1>Welcome to the SyllaBot</h1>
+        <div className="introductory-element-container">
+          <IntroductoryElement />
         </div>
       ) : (
         <div className="chat-area">
@@ -41,7 +39,7 @@ const SyllaBot = () => {
           ))}
         </div>
       )}
-      <div className="input-area">
+      {/* <div className="input-area">
         <input
           type="text"
           value={userInput}
@@ -49,6 +47,43 @@ const SyllaBot = () => {
           placeholder="Message SyllaBot..."
         />
         <button onClick={handleSend}>Send</button>
+      </div> */}
+      <div className="input-area-container">
+        <div className="input-area-text">
+          <p>How can I help you today?</p>
+        </div>
+        <div className="input-area-outline">
+          <input
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder="Message SyllaBot..."
+            rows={3}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              outline: "none",
+              resize: "none",
+              fontFamily: "Roboto, sans-serif",
+              overflow: "hidden",
+              placeholder: {
+                padding: "5px",
+              },
+            }}
+          ></input>
+          <button
+            onClick={handleSend}
+            className="input-area-button submit-button"
+          >
+            <ion-icon name="send"></ion-icon>
+          </button>
+          <button className="input-area-button attach-button">
+            <ion-icon name="attach"></ion-icon>
+          </button>
+          <button className="input-area-button upload-button">
+            <ion-icon name="link"></ion-icon>
+          </button>
+        </div>
       </div>
     </div>
   );
