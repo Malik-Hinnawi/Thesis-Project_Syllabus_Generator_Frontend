@@ -3,6 +3,7 @@ import SideBar from "./components/SideBar";
 import IntroductoryElement from "./components/IntroductoryElement";
 import InputArea from "./components/InputArea";
 import CurrentChat from "./components/CurrentChat";
+import SyllaBot from "./components/SyllaBot";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <div className="app-content">
           <div className="app-section">
             <IntroductoryElement />
+            {/* <SyllaBot /> */}
           </div>
           <div className="app-input-area">
             <InputArea />
