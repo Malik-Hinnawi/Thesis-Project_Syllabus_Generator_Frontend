@@ -1,20 +1,23 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/LoginPage.css";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  // navigate("/syllabot");
 
-  // const handleLogin = () => {
-  //   // For simplicity, assume the login is always successful.
-  //   // In a real app, you'd make an API call here.
-  //   if (username === "user" && password === "password") {
-  //     localStorage.setItem("authToken", "123456"); // Example token
-  //     history.push("/home");
-  //   } else {
-  //     alert("Invalid credentials");
-  //   }
-  // };
+  const handleLogin = () => {
+    // For simplicity, assume the login is always successful.
+    // In a real app, you'd make an API call here.
+    if (username === "user" && password === "password") {
+      localStorage.setItem("authToken", "123456"); // Example token
+      navigate("/syllabot");
+    } else {
+      alert("Invalid credentials");
+    }
+  };
 
   return (
     <div className="login-page-container">
@@ -31,9 +34,10 @@ const LoginPage = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      {/* <button onClick={handleLogin}>Login</button> */}
-      <button>Login</button>
-      <a className="sign-up-link">Are you new? Sign up</a>
+      <button onClick={handleLogin}>Login</button>
+      <a className="sign-up-link" href="#">
+        Are you new? Sign up
+      </a>
     </div>
   );
 };
