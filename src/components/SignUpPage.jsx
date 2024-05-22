@@ -1,9 +1,14 @@
 import React, { useState } from "react";
+import instance from "../axios";
+import { useNavigate } from "react-router-dom";
 import "../styles/SignUpPage.css";
 
 const SignUpPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   // const handleLogin = () => {
   //   // For simplicity, assume the login is always successful.
@@ -16,6 +21,30 @@ const SignUpPage = () => {
   //   }
   // };
 
+  const handleSignUp = async (event) => {
+    event.preventDefault();
+    setError("");
+
+    try {
+      const response = await instance.post(
+        "https://syllabusgeneratorbackend.onrender.com/auth/signup",
+        {
+          email: email,
+          username: username,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   return (
     <div className="sign-up-page-container">
       <h2>Sign Up</h2>
@@ -26,13 +55,22 @@ const SignUpPage = () => {
         onChange={(e) => setUsername(e.target.value)}
       />
       <input
+        type="text"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
       {/* <button onClick={handleLogin}>Login</button> */}
-      <button>Sign Up</button>
+      <button onClick={handleSignUp}>Sign Up</button>
+      <a className="sign-up-link" href="/">
+        Already have an account? Log in
+      </a>
     </div>
   );
 };

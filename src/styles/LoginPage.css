@@ -24,6 +24,10 @@
   padding-left: 0.4em;
 }
 
+.login-page-container input:focus {
+  outline: none;
+}
+
 .login-page-container button {
   cursor: pointer;
   width: 50%;
@@ -48,4 +52,9 @@
 .sign-up-link:hover,
 .sign-up-link:active {
   color: #adb5bd;
+}
+
+.login-page-container button,
+.login-page-container a {
+  transition: all 0.3s;
 }
