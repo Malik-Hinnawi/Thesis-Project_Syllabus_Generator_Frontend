@@ -36,7 +36,7 @@ function InputArea() {
               outline: "none",
               resize: "none",
               fontFamily: "Roboto, sans-serif",
-              overflow: "hidden", // Add this line to hide overflow
+              overflow: "hidden",
               placeholder: {
                 padding: "5px",
               },

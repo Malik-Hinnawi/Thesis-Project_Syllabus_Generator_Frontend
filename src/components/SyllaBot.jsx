@@ -39,15 +39,6 @@ const SyllaBot = () => {
           ))}
         </div>
       )}
-      {/* <div className="input-area">
-        <input
-          type="text"
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          placeholder="Message SyllaBot..."
-        />
-        <button onClick={handleSend}>Send</button>
-      </div> */}
       <div className="input-area-container">
         <div className="input-area-text">
           <p>How can I help you today?</p>
