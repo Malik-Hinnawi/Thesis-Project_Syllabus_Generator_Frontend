@@ -1,8 +1,8 @@
 import "./App.css";
 import SideBar from "./components/SideBar";
-import IntroductoryElement from "./components/IntroductoryElement";
-import InputArea from "./components/InputArea";
 import SyllaBot from "./components/SyllaBot";
+import LoginPage from "./components/LoginPage";
+import SignUpPage from "./components/SignUpPage";
 
 function App() {
   return (
@@ -13,6 +13,8 @@ function App() {
         </div>
         <div className="app-content">
           <SyllaBot />
+          {/* <LoginPage /> */}
+          {/* <SignUpPage /> */}
         </div>
       </div>
     </div>
