@@ -10,6 +10,15 @@
   box-sizing: border-box;
 }
 
+.container {
+  background-color: #e9ecef;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .app-container {
   height: 100vh;
 }
