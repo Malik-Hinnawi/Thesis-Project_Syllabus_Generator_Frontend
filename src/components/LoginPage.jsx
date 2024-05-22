@@ -8,12 +8,6 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Log the base URL to debug
-    console.log("Axios instance base URL:", instance.defaults.baseURL);
-  }, []);
-
   // navigate("/syllabot");
 
   const handleLogin = async (event) => {

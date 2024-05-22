@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import IntroductoryElement from "./IntroductoryElement";
+import ModeSelector from "./ModeSelector";
 import "../styles/SyllaBot.css"; // Assuming you have some CSS for styling
 
 const SyllaBot = () => {
@@ -28,7 +29,8 @@ const SyllaBot = () => {
     <div className="chat-container">
       {showIntro ? (
         <div className="introductory-element-container">
-          <IntroductoryElement />
+          {/* <IntroductoryElement /> */}
+          <ModeSelector />
         </div>
       ) : (
         <div className="chat-area">
