@@ -4,6 +4,7 @@ import ModeSelector from "./ModeSelector";
 import SideBar from "./SideBar";
 import "../styles/SyllaBot.css";
 import { AuthContext } from "../contexts/AuthContext"; // Import AuthContext
+import config from "../config";
 
 const SyllaBot = () => {
   const [chats, setChats] = useState([
@@ -14,6 +15,7 @@ const SyllaBot = () => {
   ]);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [userInput, setUserInput] = useState("");
+  const [mode, setMode] = useState(1);
 
   const { logout } = useContext(AuthContext); // Access the logout function
 
@@ -23,7 +25,7 @@ const SyllaBot = () => {
     }
   }, [chats]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (userInput.trim()) {
       let chatId = currentChatId;
       if (currentChatId === null) {
@@ -100,7 +102,7 @@ const SyllaBot = () => {
           {shouldShowIntroduction ? (
             <div className="chat-introduction-container">
               <Introduction />
-              <ModeSelector />
+              <ModeSelector mode={mode} setMode={setMode} />
             </div>
           ) : (
             <div className="chat-area">

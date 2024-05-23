@@ -1,9 +1,7 @@
 import "../styles/ModeSelector.css";
 import React, { useState } from "react";
 
-const ModeSelector = () => {
-  const [mode, setMode] = useState("q&a");
-
+const ModeSelector = ({ mode, setMode }) => {
   const handleModeChange = (selectedMode) => {
     setMode(selectedMode);
   };
@@ -11,14 +9,14 @@ const ModeSelector = () => {
   return (
     <div className="mode-selection-container">
       <button
-        className={mode === "q&a" ? "selected" : ""}
-        onClick={() => handleModeChange("q&a")}
+        className={mode === 1 ? "selected" : ""}
+        onClick={() => handleModeChange(1)}
       >
         Question & Answer
       </button>
       <button
-        className={mode === "sg" ? "selected" : ""}
-        onClick={() => handleModeChange("sg")}
+        className={mode === 0 ? "selected" : ""}
+        onClick={() => handleModeChange(0)}
       >
         Syllabus Generation
       </button>

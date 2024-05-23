@@ -12,6 +12,8 @@
   height: 100vh;
 }
 
+/* ------------------------------------ */
+
 .chat-introduction-container {
   display: flex;
   flex-direction: column;
@@ -19,6 +21,55 @@
   align-items: center;
   justify-content: center;
 }
+
+/* ------------------------------------ */
+
+.chat-container {
+  /* display: flex;
+  flex-direction: column;
+  height: 100vh; */
+  width: 100%;
+  /* align-items: center;
+  justify-content: center; */
+  /* ### */
+  background-color: #e9ecef;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 5fr 1fr;
+}
+
+.chat-area {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.message {
+  max-width: 60%; /* Adjust this as needed */
+  word-wrap: break-word; /* Break long words and wrap them */
+  overflow-wrap: break-word; /* Ensure long words break properly */
+  white-space: pre-wrap; /* Preserve whitespace and wrap text */
+  padding: 10px; /* Add some padding for better readability */
+  margin: 0.5em 0; /* Space out the messages */
+  border-radius: 10px; /* Optional: round the corners of the message bubbles */
+}
+
+.message.user {
+  background-color: #e6fcf5; /* Color for user messages */
+  font-weight: bold;
+  color: #087f5b;
+  align-self: flex-end; /* Align user messages to the right */
+}
+
+.message.bot {
+  background-color: #087f5b; /* Color for bot messages */
+  color: #ffffff;
+  align-self: flex-start; /* Align bot messages to the left */
+}
+
+/* ------------------------------------ */
 
 .input-area-container {
   justify-self: center;
@@ -102,45 +153,4 @@
   margin-left: 0.2em;
 }
 
-/* #################### ADDED LATER #################### */
-
-.chat-container {
-  /* display: flex;
-  flex-direction: column;
-  height: 100vh; */
-  width: 100%;
-  /* align-items: center;
-  justify-content: center; */
-  /* ### */
-  background-color: #e9ecef;
-  height: 100vh;
-  display: grid;
-  grid-template-rows: 5fr 1fr;
-}
-
-.chat-area {
-  flex: 1;
-  width: 100%;
-  overflow-y: auto;
-  padding: 10px;
-  background-color: #e9ecef;
-  display: flex;
-  flex-direction: column;
-}
-
-.message {
-  margin: 5px 0;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 60%;
-}
-
-.message.user {
-  align-self: flex-end;
-  background-color: #a8e6cf;
-}
-
-.message.bot {
-  align-self: flex-start;
-  background-color: #dcedc1;
-}
+/* ------------------------------------ */
