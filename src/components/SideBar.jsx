@@ -25,13 +25,15 @@ const SideBar = ({
       </div>
       <div className="sidebar-buttons">
         <button className="sidebar-button new-chat-button" onClick={onNewChat}>
-          New Chat
+          {/* New Chat */}
+          <ion-icon name="add"></ion-icon>
         </button>
         <button
           className="sidebar-button delete-chat-button"
           onClick={onDeleteChat}
         >
-          Delete Chat
+          {/* Delete Chat */}
+          <ion-icon name="trash"></ion-icon>
         </button>
       </div>
     </div>

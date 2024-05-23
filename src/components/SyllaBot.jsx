@@ -110,7 +110,7 @@ const SyllaBot = () => {
           )}
           <div className="input-area-container">
             <div className="input-area-text">
-              <p>How can I help you today?</p>
+              <p>You can start by choosing the mode according to your needs!</p>
             </div>
             <div className="input-area-outline">
               <input

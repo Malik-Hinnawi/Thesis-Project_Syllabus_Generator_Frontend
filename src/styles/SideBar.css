@@ -52,34 +52,41 @@
 }
 
 .sidebar-button {
-  width: 92px;
-  padding: 8px 6px;
+  width: 4em;
+  height: 2.6em;
   border: none;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 1em;
   transition: all 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #f1f3f5; */
+  background-color: #f4f5f7;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.sidebar-button ion-icon {
+  font-size: 1.4em;
 }
 
 .new-chat-button {
-  color: #087f5b;
-  background-color: #e6fcf5;
+  color: #ffffff;
+  background-color: #087f5b;
 }
 
 .new-chat-button:hover,
 .new-chat-button:active {
-  background-color: #dcf2eb;
-}
-
-.new-chat-button ion-icon {
-  font-size: 18px;
+  background-color: #007753;
 }
 
 .delete-chat-button {
-  background-color: #ffe3e3;
-  color: #f03e3e;
+  background-color: #e03131;
+
+  color: #ffffff;
 }
 
 .delete-chat-button:hover,
 .delete-chat-button:active {
-  background-color: #f5d9d9;
+  background-color: #c92a2a;
 }

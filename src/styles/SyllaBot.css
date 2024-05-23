@@ -36,8 +36,9 @@
 
 .input-area-text {
   align-self: flex-start;
-  color: #087f5b;
+  color: #adb5bd;
   font-weight: bold;
+  font-size: 0.8em;
   margin-bottom: 12px;
 }
 
