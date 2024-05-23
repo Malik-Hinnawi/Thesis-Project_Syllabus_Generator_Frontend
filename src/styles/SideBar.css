@@ -21,14 +21,24 @@
   background-color: #f1f3f5;
   border-radius: 4px;
   font-size: 12px;
+  cursor: pointer;
+  color: #087f5b;
+  font-weight: bold;
 
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
 
-.selected-chat {
-  background-color: #d3d3d3; /* Or any color you prefer */
+.listed-chat:hover {
+  background-color: #e6fcf5;
+  transition: all 0.4s ease;
+}
+
+.selected-chat,
+.selected-chat:hover {
+  background-color: #007753;
+  color: #ffffff;
 }
 
 .sidebar-buttons {
@@ -67,14 +77,9 @@
 .delete-chat-button {
   background-color: #ffe3e3;
   color: #f03e3e;
-  border: none;
 }
 
 .delete-chat-button:hover,
 .delete-chat-button:active {
   background-color: #f5d9d9;
 }
-
-/* .delete-chat-button ion-icon {
-  color: #f03e3e;
-} */
