@@ -59,6 +59,10 @@ const SyllaBot = () => {
 
   const currentChat = chats.find((chat) => chat.id === currentChatId);
 
+  const shouldShowIntroduction =
+    currentChatId === null ||
+    (currentChat && currentChat.messages.length === 0);
+
   return (
     <div className="syllabot-container">
       <div className="syllabot-outline">
@@ -72,7 +76,7 @@ const SyllaBot = () => {
           />
         </div>
         <div className="chat-container">
-          {currentChatId === null ? (
+          {shouldShowIntroduction ? (
             <div className="chat-introduction-container">
               <Introduction />
               <ModeSelector />
