@@ -44,14 +44,14 @@
 }
 
 .sign-up-link {
-  color: #dee2e6;
+  color: #adb5bd;
   text-decoration: underline;
   cursor: pointer;
 }
 
 .sign-up-link:hover,
 .sign-up-link:active {
-  color: #adb5bd;
+  color: #868e96;
 }
 
 .login-page-container button,

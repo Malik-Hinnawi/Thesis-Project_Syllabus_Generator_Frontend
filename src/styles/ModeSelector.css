@@ -9,18 +9,6 @@
   color: #087f5b;
 }
 
-/* KOLAYDI */
-
-/* ToggleSwitch.css */
-.toggle-switch {
-  width: 50px;
-  height: 30px;
-  border-radius: 15px;
-  background-color: #ccc;
-  position: relative;
-  cursor: pointer;
-}
-
 .toggle-switch.on {
   background-color: #c3fae8; /* Background color when toggle is on */
 }
@@ -29,17 +17,19 @@
   background-color: #63e6be; /* Background color when toggle is off */
 }
 
-.toggle-handle {
-  width: 26px;
-  height: 26px;
-  background-color: white;
-  border-radius: 50%;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  transition: transform 0.3s ease;
+.mode-selection-container button {
+  margin: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #087f5b;
+  background-color: #e6fcf5;
+  color: #087f5b;
+  border-radius: 0.6em;
+  transition: all 0.3s ease;
 }
 
-.toggle-switch.on .toggle-handle {
-  transform: translateX(20px);
+.mode-selection-container button.selected {
+  background-color: #007753; /* Example background color */
+  color: white;
+  border: 1px solid #007753;
 }
