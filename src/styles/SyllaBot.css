@@ -35,7 +35,6 @@
 }
 
 .input-area-text {
-  align-self: flex-start;
   color: #adb5bd;
   font-weight: bold;
   font-size: 0.8em;
@@ -51,14 +50,14 @@
 
 .input-area-outline input {
   width: 840px;
-  height: 38px;
+  height: 3em;
   padding: 6px 6px;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.3em;
 }
 
 .input-area-button {
-  width: 72px;
+  width: 5em;
   padding: 10px 4px;
   border-radius: 4px;
   border: none;
@@ -86,21 +85,21 @@
   color: #ffffff;
 }
 
-.attach-button,
-.upload-button {
-  background-color: #ffffff;
+.logout-button {
+  margin-left: 3em;
+  color: #adb5bd;
+  background-color: #e9ecef;
+  font-weight: bold;
+  font-size: 1.2em;
 }
 
-.attach-button:hover,
-.attach-button:active,
-.upload-button:hover,
-.upload-button:active {
-  background-color: #e6fcf5;
+.logout-button:hover {
+  color: #212529;
+  text-decoration: underline;
 }
 
-.attach-button ion-icon,
-.upload-button ion-icon {
-  color: #087f5b;
+.logout-button ion-icon {
+  margin-left: 0.2em;
 }
 
 /* #################### ADDED LATER #################### */
