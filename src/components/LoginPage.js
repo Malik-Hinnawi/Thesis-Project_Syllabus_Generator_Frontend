@@ -1,33 +1,18 @@
-import React, { useEffect, useState } from "react";
-import instance from "../axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 import "../styles/LoginPage.css";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
-  // navigate("/syllabot");
+  const { login } = useContext(AuthContext);
 
-  const handleLogin = async (event) => {
+  const handleLogin = async () => {
     setError("");
 
     try {
-      const response = await instance.post("/auth/login", {
-        email: username,
-        password: password,
-      });
-
-      if (response.data.access_token) {
-        // Assuming the response contains a token for authentication
-
-        localStorage.setItem("token", response.data.access_token);
-        // Redirect to a different page or update the state to reflect the logged-in status
-        navigate("/syllabot");
-      } else {
-        setError("Invalid login credentials");
-      }
+      await login(username, password);
     } catch (err) {
       setError(err.message);
     }
@@ -36,6 +21,7 @@ const LoginPage = () => {
   return (
     <div className="login-page-container">
       <h2>Login</h2>
+      {error && <p className="error">{error}</p>}
       <input
         type="text"
         placeholder="Username"

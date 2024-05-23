@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import IntroductoryElement from "./IntroductoryElement";
+import Introduction from "./Introduction";
 import ModeSelector from "./ModeSelector";
 import SideBar from "./SideBar";
 import "../styles/SyllaBot.css";
@@ -73,8 +73,9 @@ const SyllaBot = () => {
         </div>
         <div className="chat-container">
           {currentChatId === null ? (
-            <div className="introductory-element-container">
-              <IntroductoryElement />
+            <div className="chat-introduction-container">
+              <Introduction />
+              <ModeSelector />
             </div>
           ) : (
             <div className="chat-area">
