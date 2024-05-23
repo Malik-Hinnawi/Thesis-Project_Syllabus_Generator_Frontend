@@ -1,3 +1,17 @@
+.syllabot-container {
+  width: 100%;
+  height: 100%;
+}
+
+.syllabot-outline {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+}
+
+.syllabot-sidebar {
+  height: 100vh;
+}
+
 .introductory-element-container {
   display: flex;
   align-items: center;

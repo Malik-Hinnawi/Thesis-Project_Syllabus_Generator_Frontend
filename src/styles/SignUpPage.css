@@ -24,6 +24,10 @@
   padding-left: 0.4em;
 }
 
+.sign-up-page-container input:focus {
+  outline: none;
+}
+
 .sign-up-page-container button {
   cursor: pointer;
   width: 50%;
@@ -37,4 +41,25 @@
 .sign-up-page-container button:hover,
 .sign-up-page-container button:active {
   background-color: #007753;
+}
+
+.sign-up-page-container button,
+.sign-up-page-container a {
+  transition: all 0.3s;
+}
+
+.login-link {
+  color: #adb5bd;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.login-link:hover,
+.login-link:active {
+  color: #868e96;
+}
+
+.sign-up-page-container button,
+.sign-up-page-container a {
+  transition: all 0.3s;
 }

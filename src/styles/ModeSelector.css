@@ -1,0 +1,35 @@
+.mode-selection-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mode-selection-container ion-icon {
+  font-size: 48px;
+  color: #087f5b;
+}
+
+.toggle-switch.on {
+  background-color: #c3fae8; /* Background color when toggle is on */
+}
+
+.toggle-switch.off {
+  background-color: #63e6be; /* Background color when toggle is off */
+}
+
+.mode-selection-container button {
+  margin: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #087f5b;
+  background-color: #e6fcf5;
+  color: #087f5b;
+  border-radius: 0.6em;
+  transition: all 0.3s ease;
+}
+
+.mode-selection-container button.selected {
+  background-color: #007753; /* Example background color */
+  color: white;
+  border: 1px solid #007753;
+}

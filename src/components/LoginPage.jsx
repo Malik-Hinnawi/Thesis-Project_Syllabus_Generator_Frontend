@@ -8,12 +8,6 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Log the base URL to debug
-    console.log("Axios instance base URL:", instance.defaults.baseURL);
-  }, []);
-
   // navigate("/syllabot");
 
   const handleLogin = async (event) => {
@@ -60,15 +54,6 @@ const LoginPage = () => {
       </a>
     </div>
   );
-
-  // For simplicity, assume the login is always successful.
-  // In a real app, you'd make an API call here.
-  // if (username === "user" && password === "password") {
-  //   localStorage.setItem("authToken", "123456"); // Example token
-  //   navigate("/syllabot");
-  // } else {
-  //   alert("Invalid credentials");
-  // }
 };
 
 export default LoginPage;

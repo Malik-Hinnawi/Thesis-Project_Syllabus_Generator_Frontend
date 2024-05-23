@@ -19,7 +19,7 @@
   align-items: center;
 }
 
-.app-container {
+/* .app-container {
   height: 100vh;
 }
 
@@ -30,14 +30,14 @@
 
 .app-sidebar {
   height: 100vh;
-}
+} */
 
-.app-content {
+/* .app-content {
   background-color: #e9ecef;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* display: grid; */
-  /* grid-template-rows: 5fr 1fr; */
-}
+  display: grid;
+  /grid-template-rows: 5fr 1fr;
+} */
