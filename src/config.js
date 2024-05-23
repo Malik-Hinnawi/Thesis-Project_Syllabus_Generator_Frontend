@@ -1,5 +1,5 @@
 const config = {
-  apiBaseUrl: "https://syllabusgeneratorbackend.onrender.com",
+  apiBaseUrl: "https://8c38-31-142-2-230.ngrok-free.app/api/",
 };
 
 export default config;
