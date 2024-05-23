@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Introduction from "./Introduction";
 import ModeSelector from "./ModeSelector";
 import SideBar from "./SideBar";
@@ -14,8 +14,26 @@ const SyllaBot = () => {
   const [currentChatId, setCurrentChatId] = useState(null);
   const [userInput, setUserInput] = useState("");
 
+  useEffect(() => {
+    if (chats.length === 0) {
+      setCurrentChatId(null);
+    }
+  }, [chats]);
+
   const handleSend = () => {
-    if (userInput.trim() && currentChatId !== null) {
+    if (userInput.trim()) {
+      let chatId = currentChatId;
+      if (currentChatId === null) {
+        chatId = chats.length ? chats[chats.length - 1].id + 1 : 1;
+        const newChat = {
+          id: chatId,
+          title: `Chat Number ${chatId}!`,
+          messages: [],
+        };
+        setChats([...chats, newChat]);
+        setCurrentChatId(chatId);
+      }
+
       const newMessage = { text: userInput, sender: "user" };
       const botResponse = {
         text: "This is a response from SyllaBot",
@@ -24,7 +42,7 @@ const SyllaBot = () => {
 
       setChats((prevChats) =>
         prevChats.map((chat) =>
-          chat.id === currentChatId
+          chat.id === chatId
             ? { ...chat, messages: [...chat.messages, newMessage, botResponse] }
             : chat
         )
