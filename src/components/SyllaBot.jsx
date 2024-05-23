@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Introduction from "./Introduction";
 import ModeSelector from "./ModeSelector";
 import SideBar from "./SideBar";
 import "../styles/SyllaBot.css";
+import { AuthContext } from "../contexts/AuthContext"; // Import AuthContext
 
 const SyllaBot = () => {
   const [chats, setChats] = useState([
@@ -13,6 +14,8 @@ const SyllaBot = () => {
   ]);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [userInput, setUserInput] = useState("");
+
+  const { logout } = useContext(AuthContext); // Access the logout function
 
   useEffect(() => {
     if (chats.length === 0) {
@@ -137,12 +140,13 @@ const SyllaBot = () => {
               >
                 <ion-icon name="send"></ion-icon>
               </button>
-              <button className="input-area-button attach-button">
-                <ion-icon name="attach"></ion-icon>
-              </button>
-              <button className="input-area-button upload-button">
-                <ion-icon name="link"></ion-icon>
-              </button>
+              <button
+                onClick={logout}
+                className="input-area-button logout-button"
+              >
+                LogOut
+                <ion-icon name="log-out-outline"></ion-icon>
+              </button>{" "}
             </div>
           </div>
         </div>
