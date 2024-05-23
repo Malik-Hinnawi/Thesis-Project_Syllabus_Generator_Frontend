@@ -1,26 +1,41 @@
+import React from "react";
 import "../styles/SideBar.css";
 
-function SideBar() {
+const SideBar = ({
+  chats,
+  currentChatId,
+  onNewChat,
+  onDeleteChat,
+  onChatSelect,
+}) => {
   return (
     <div className="sidebar-container">
       <div className="listed-chats">
-        <div className="chat-1 listed-chat">Chat Number One!</div>
-        <div className="chat-2 listed-chat">Chat Number Two!</div>
-        <div className="chat-3 listed-chat">Chat Number Three!</div>
-        <div className="chat-4 listed-chat">Chat Number Four!</div>
+        {chats.map((chat) => (
+          <div
+            key={chat.id}
+            className={`listed-chat ${
+              chat.id === currentChatId ? "selected-chat" : ""
+            }`}
+            onClick={() => onChatSelect(chat.id)}
+          >
+            {chat.title}
+          </div>
+        ))}
       </div>
       <div className="sidebar-buttons">
-        <button className="sidebar-button new-chat-button">
-          {/* <ion-icon name="add-circle-filled"></ion-icon> */}
+        <button className="sidebar-button new-chat-button" onClick={onNewChat}>
           New Chat
         </button>
-        <button className="sidebar-button delete-chat-button">
-          {/* <ion-icon name="trash-filled"></ion-icon> */}
+        <button
+          className="sidebar-button delete-chat-button"
+          onClick={onDeleteChat}
+        >
           Delete Chat
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default SideBar;

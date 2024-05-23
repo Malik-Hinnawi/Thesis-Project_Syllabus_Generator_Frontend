@@ -27,6 +27,10 @@
   align-items: center;
 }
 
+.selected-chat {
+  background-color: #d3d3d3; /* Or any color you prefer */
+}
+
 .sidebar-buttons {
   grid-row: 3 / 4;
   align-self: center;
