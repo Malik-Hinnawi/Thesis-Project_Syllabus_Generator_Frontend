@@ -2,45 +2,83 @@ import React, { useState } from "react";
 import IntroductoryElement from "./IntroductoryElement";
 import ModeSelector from "./ModeSelector";
 import SideBar from "./SideBar";
-import "../styles/SyllaBot.css"; // Assuming you have some CSS for styling
+import "../styles/SyllaBot.css";
 
 const SyllaBot = () => {
-  const [showIntro, setShowIntro] = useState(true);
-  const [messages, setMessages] = useState([]);
+  const [chats, setChats] = useState([
+    { id: 1, title: "Chat Number One!", messages: [] },
+    { id: 2, title: "Chat Number Two!", messages: [] },
+    { id: 3, title: "Chat Number Three!", messages: [] },
+    { id: 4, title: "Chat Number Four!", messages: [] },
+  ]);
+  const [currentChatId, setCurrentChatId] = useState(null);
   const [userInput, setUserInput] = useState("");
 
   const handleSend = () => {
-    if (userInput.trim()) {
-      // Add user message to the chat
-      setMessages([...messages, { text: userInput, sender: "user" }]);
-      // Add a bot response (for demo purposes, this is static)
-      setMessages([
-        ...messages,
-        { text: userInput, sender: "user" },
-        { text: "This is a response from SyllaBot", sender: "bot" },
-      ]);
-      // Hide the intro text
-      setShowIntro(false);
-      // Clear the input field
+    if (userInput.trim() && currentChatId !== null) {
+      const newMessage = { text: userInput, sender: "user" };
+      const botResponse = {
+        text: "This is a response from SyllaBot",
+        sender: "bot",
+      };
+
+      setChats((prevChats) =>
+        prevChats.map((chat) =>
+          chat.id === currentChatId
+            ? { ...chat, messages: [...chat.messages, newMessage, botResponse] }
+            : chat
+        )
+      );
+
       setUserInput("");
     }
   };
 
+  const handleNewChat = () => {
+    const newChatId = chats.length ? chats[chats.length - 1].id + 1 : 1;
+    const newChat = {
+      id: newChatId,
+      title: `Chat Number ${newChatId}!`,
+      messages: [],
+    };
+    setChats([...chats, newChat]);
+    setCurrentChatId(newChatId);
+  };
+
+  const handleDeleteChat = () => {
+    if (currentChatId !== null) {
+      const updatedChats = chats.filter((chat) => chat.id !== currentChatId);
+      setChats(updatedChats);
+      setCurrentChatId(updatedChats.length ? updatedChats[0].id : null);
+    }
+  };
+
+  const handleChatSelection = (chatId) => {
+    setCurrentChatId(chatId);
+  };
+
+  const currentChat = chats.find((chat) => chat.id === currentChatId);
+
   return (
-    <div className=".syllabot-container">
+    <div className="syllabot-container">
       <div className="syllabot-outline">
         <div className="syllabot-sidebar">
-          <SideBar />
+          <SideBar
+            chats={chats}
+            currentChatId={currentChatId}
+            onNewChat={handleNewChat}
+            onDeleteChat={handleDeleteChat}
+            onChatSelect={handleChatSelection}
+          />
         </div>
         <div className="chat-container">
-          {showIntro ? (
+          {currentChatId === null ? (
             <div className="introductory-element-container">
               <IntroductoryElement />
-              {/* <ModeSelector /> */}
             </div>
           ) : (
             <div className="chat-area">
-              {messages.map((msg, index) => (
+              {currentChat.messages.map((msg, index) => (
                 <div key={index} className={`message ${msg.sender}`}>
                   {msg.text}
                 </div>
