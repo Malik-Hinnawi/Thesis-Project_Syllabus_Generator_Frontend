@@ -1,0 +1,16 @@
+.not-found-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+}
+
+.not-found-page-container h2 {
+  font-size: 1em;
+  color: #868e96;
+}
+
+.not-found-logo {
+  height: 10em;
+}

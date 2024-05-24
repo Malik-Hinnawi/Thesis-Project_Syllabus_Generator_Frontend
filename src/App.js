@@ -6,7 +6,6 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
-// import SideBar from "./components/SideBar";
 import SyllaBot from "./components/SyllaBot";
 import LoginPage from "./components/LoginPage";
 import SignUpPage from "./components/SignUpPage";
