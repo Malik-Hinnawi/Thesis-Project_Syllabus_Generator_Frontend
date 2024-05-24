@@ -7,6 +7,15 @@ import { AuthContext } from "../contexts/AuthContext"; // Import AuthContext
 import instance from "../axios";
 
 const SyllaBot = () => {
+  // const [chats, setChats] = useState([
+  //   { id: 1, title: "Chat Number One!", messages: [] },
+  //   { id: 2, title: "Chat Number Two!", messages: [] },
+  //   { id: 3, title: "Chat Number Three!", messages: [] },
+  //   { id: 4, title: "Chat Number Four!", messages: [] },
+  // ]);
+  // const [currentChatId, setCurrentChatId] = useState(null);
+  // const [userInput, setUserInput] = useState("");
+
   const [chats, setChats] = useState([]);
   const [currentChatId, setCurrentChatId] = useState(() => {
     const storedChatId = localStorage.getItem("currentChatId");
@@ -82,6 +91,8 @@ const SyllaBot = () => {
 
     fetchMessages();
   }, [currentChatId]);
+
+  /* IF THERE IS NO CHAT */
 
   useEffect(() => {
     if (chats.length === 0) {
@@ -201,6 +212,62 @@ const SyllaBot = () => {
   //   setChats([...chats, newChat]);
   //   setCurrentChatId(newChatId);
   // };
+
+  /* HANDLE SENDING A NEW MESSAGE */
+  const handleSend = async () => {
+    if (userInput.trim()) {
+      let chatId = currentChatId;
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in local storage");
+        return;
+      }
+
+      if (currentChatId !== null) {
+        const messagePayload = {
+          content: userInput,
+        };
+
+        try {
+          const endpoint = `chat/${chatId}/syllabus-generator`;
+
+          const messageResponse = await instance.post(
+            endpoint,
+            messagePayload,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (messageResponse.status === 200) {
+            const data = messageResponse.data;
+            console.log("Message successfully sent:", data);
+
+            const updatedMessages = [...currentMessages, ...data];
+            setCurrentMessages(updatedMessages);
+
+            const updatedChats = chats.map((chat) =>
+              chat.id === chatId ? { ...chat, messages: updatedMessages } : chat
+            );
+
+            setChats(updatedChats);
+            setUserInput("");
+          } else {
+            console.error(
+              "Failed to send message:",
+              messageResponse.statusText
+            );
+          }
+        } catch (error) {
+          console.error("Error while sending message:", error);
+        }
+      }
+    }
+  };
 
   const handleNewChat = async () => {
     try {
@@ -351,7 +418,7 @@ const SyllaBot = () => {
                 }}
               ></input>
               <button
-                // onClick={handleSend}
+                onClick={handleSend}
                 className="input-area-button submit-button"
               >
                 <ion-icon name="send"></ion-icon>
