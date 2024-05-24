@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,6 +6,7 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
+import Snackbar from "./components/Snackbar";
 import SyllaBot from "./components/SyllaBot";
 import LoginPage from "./components/LoginPage";
 import SignUpPage from "./components/SignUpPage";
@@ -36,23 +37,30 @@ import "./App.css";
 // }
 
 const App = () => {
+  const [snackbar, setSnackbar] = useState({ message: "", type: "" });
   return (
     <div className="container">
       <Router>
-        <AuthProviderWrapper />
+        <AuthProviderWrapper setSnackbar={setSnackbar} />
+        {snackbar.message && (
+          <Snackbar message={snackbar.message} type={snackbar.type} />
+        )}
       </Router>
     </div>
   );
 };
 
-const AuthProviderWrapper = () => {
+const AuthProviderWrapper = ({ setSnackbar }) => {
   const navigate = useNavigate();
 
   return (
-    <AuthProvider navigate={navigate}>
+    <AuthProvider navigate={navigate} setSnackbar={setSnackbar}>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route
+          path="/signup"
+          element={<SignUpPage setSnackbar={setSnackbar} />}
+        />
         <Route
           path="/syllabot"
           element={<ProtectedRoute element={<SyllaBot />} />}

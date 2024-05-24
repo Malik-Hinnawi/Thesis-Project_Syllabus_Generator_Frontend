@@ -19,20 +19,18 @@ const SideBar = ({
             }`}
             onClick={() => onChatSelect(chat.id)}
           >
-            {chat.title}
+            Chat Number {chat.id}
           </div>
         ))}
       </div>
       <div className="sidebar-buttons">
         <button className="sidebar-button new-chat-button" onClick={onNewChat}>
-          {/* New Chat */}
           <ion-icon name="add"></ion-icon>
         </button>
         <button
           className="sidebar-button delete-chat-button"
           onClick={onDeleteChat}
         >
-          {/* Delete Chat */}
           <ion-icon name="trash"></ion-icon>
         </button>
       </div>

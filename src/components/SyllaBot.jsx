@@ -13,18 +13,74 @@ const SyllaBot = () => {
     return storedChatId ? parseInt(storedChatId) : null;
   });
 
+  const [currentMessages, setCurrentMessages] = useState([]);
   const [userInput, setUserInput] = useState("");
   const [mode, setMode] = useState(1);
   const [newChat, setNewChat] = useState(false);
 
-  const { logout } = useContext(AuthContext); // Access the logout function
+  const { logout } = useContext(AuthContext);
+
+  /* GETTING AL CHATS FOR THE CURRENT USER */
 
   useEffect(() => {
-    if (currentChatId !== null) {
-      localStorage.setItem("currentChatId", currentChatId);
-    } else {
-      localStorage.removeItem("currentChatId");
-    }
+    const fetchChats = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in local storage");
+        return;
+      }
+
+      try {
+        const response = await instance.get("chat/user/chats", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 200) {
+          setChats(response.data);
+        } else {
+          console.error("Failed to fetch chats:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching chats:", error);
+      }
+    };
+
+    fetchChats();
+  }, []);
+
+  /* GETTING ALL MESSAGES FOR THE SELECTED CHAT */
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      if (currentChatId === null) return;
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in local storage");
+        return;
+      }
+
+      try {
+        const response = await instance.get(`chat/${currentChatId}/messages`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 200) {
+          setCurrentMessages(response.data);
+          console.log(response.data);
+        } else {
+          console.error("Failed to fetch messages:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    };
+
+    fetchMessages();
   }, [currentChatId]);
 
   useEffect(() => {
@@ -33,125 +89,187 @@ const SyllaBot = () => {
     }
   }, [chats]);
 
-  const handleSend = async () => {
-    if (userInput.trim()) {
-      let chatId = currentChatId;
+  // const handleSend = async () => {
+  //   if (userInput.trim()) {
+  //     let chatId = currentChatId;
 
+  //     const token = localStorage.getItem("token");
+  //     if (!token) {
+  //       console.error("No token found in local storage");
+  //       return;
+  //     }
+
+  //     if (currentChatId === null) {
+  //       try {
+  //         const chatCreationResponse = await instance.post(
+  //           "chat/user/chats",
+  //           { type: mode },
+  //           {
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //               Authorization: `Bearer ${token}`,
+  //             },
+  //           }
+  //         );
+
+  //         chatId = chatCreationResponse.data.id;
+  //         console.log(chatId);
+  //         setNewChat(true);
+
+  //         const newChat = {
+  //           id: chatId,
+  //           title: `Chat Number ${chatId}!`,
+  //           messages: [],
+  //         };
+  //         setChats([...chats, newChat]);
+  //         setCurrentChatId(chatId);
+  //       } catch (error) {
+  //         console.error("Error creating new chat:", error);
+  //         return;
+  //       }
+  //     }
+
+  //     const messagePayload = {
+  //       content: userInput,
+  //     };
+
+  //     try {
+  //       const endpoint =
+  //         mode === 1
+  //           ? `chat/${chatId}/q-and-a`
+  //           : `chat/${chatId}/syllabus-generator`;
+
+  //       const messageResponse = await instance.post(endpoint, messagePayload, {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+
+  //       if (messageResponse.status === 201) {
+  //         const data = messageResponse.data;
+  //         console.log("Message successfully sent:", data);
+
+  //         const {
+  //           id,
+  //           chat_id,
+  //           message_id,
+  //           title,
+  //           link,
+  //           content,
+  //           chapter,
+  //           estimated_time,
+  //           topics,
+  //         } = data;
+
+  //         const newMessage = {
+  //           id,
+  //           chat_id,
+  //           message_id,
+  //           title,
+  //           link,
+  //           content,
+  //           chapter,
+  //           estimated_time,
+  //           topics,
+  //         };
+
+  //         const updatedChats = chats.map((chat) =>
+  //           chat.id === chatId
+  //             ? { ...chat, messages: [...chat.messages, newMessage] }
+  //             : chat
+  //         );
+
+  //         setChats(updatedChats);
+  //         setUserInput(""); // Clear the input field
+  //       } else {
+  //         console.error("Failed to send message:", messageResponse.statusText);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error while sending message:", error);
+  //     }
+  //   }
+  // };
+
+  // const handleNewChat = () => {
+  //   const newChatId = chats.length ? chats[chats.length - 1].id + 1 : 1;
+  //   const newChat = {
+  //     id: newChatId,
+  //     title: `Chat Number ${newChatId}!`,
+  //     messages: [],
+  //   };
+  //   setChats([...chats, newChat]);
+  //   setCurrentChatId(newChatId);
+  // };
+
+  const handleNewChat = async () => {
+    try {
       const token = localStorage.getItem("token");
       if (!token) {
         console.error("No token found in local storage");
         return;
       }
 
-      if (currentChatId === null) {
-        try {
-          const chatCreationResponse = await instance.post(
-            "chat/user/chats",
-            { type: mode },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-
-          chatId = chatCreationResponse.data.id;
-          setNewChat(true);
-
-          const newChat = {
-            id: chatId,
-            title: `Chat Number ${chatId}!`,
-            messages: [],
-          };
-          setChats([...chats, newChat]);
-          setCurrentChatId(chatId);
-        } catch (error) {
-          console.error("Error creating new chat:", error);
-          return;
-        }
-      }
-
-      const messagePayload = {
-        content: userInput,
-      };
-
-      try {
-        const endpoint =
-          mode === 1
-            ? `chat/${chatId}/q-and-a`
-            : `chat/${chatId}/syllabus-generator`;
-
-        const messageResponse = await instance.post(endpoint, messagePayload, {
+      const newChatResponse = await instance.post(
+        "chat/user/chats",
+        { type: mode },
+        {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        });
-
-        console.log(messageResponse);
-
-        if (messageResponse.status === 201) {
-          const data = messageResponse.data;
-          console.log("Message successfully sent:", data);
-
-          const {
-            id,
-            chat_id,
-            message_id,
-            title,
-            link,
-            content,
-            chapter,
-            estimated_time,
-            topics,
-          } = data;
-
-          const newMessage = {
-            id,
-            chat_id,
-            message_id,
-            title,
-            link,
-            content,
-            chapter,
-            estimated_time,
-            topics,
-          };
-
-          const updatedChats = chats.map((chat) =>
-            chat.id === chatId
-              ? { ...chat, messages: [...chat.messages, newMessage] }
-              : chat
-          );
-
-          setChats(updatedChats);
-          setUserInput(""); // Clear the input field
-        } else {
-          console.error("Failed to send message:", messageResponse.statusText);
         }
-      } catch (error) {
-        console.error("Error while sending message:", error);
+      );
+
+      if (newChatResponse.status === 201) {
+        const newChatId = newChatResponse.data.id;
+        setCurrentChatId(newChatId);
+        setNewChat(true);
+        const newChat = {
+          id: newChatId,
+          title: `Chat Number ${newChatId}!`,
+          messages: [],
+        };
+        setChats([...chats, newChat]);
+      } else {
+        console.error("Failed to create new chat:", newChatResponse.statusText);
       }
+    } catch (error) {
+      console.error("Error creating new chat:", error);
     }
   };
 
-  const handleNewChat = () => {
-    const newChatId = chats.length ? chats[chats.length - 1].id + 1 : 1;
-    const newChat = {
-      id: newChatId,
-      title: `Chat Number ${newChatId}!`,
-      messages: [],
-    };
-    setChats([...chats, newChat]);
-    setCurrentChatId(newChatId);
-  };
-
-  const handleDeleteChat = () => {
+  const handleDeleteChat = async () => {
     if (currentChatId !== null) {
-      const updatedChats = chats.filter((chat) => chat.id !== currentChatId);
-      setChats(updatedChats);
-      setCurrentChatId(updatedChats.length ? updatedChats[0].id : null);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in local storage");
+        return;
+      }
+
+      try {
+        const response = await instance.delete(
+          `chat/user/chats/${currentChatId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          console.log("Chat deleted successfully:", response.data.message);
+          const updatedChats = chats.filter(
+            (chat) => chat.id !== currentChatId
+          );
+          setChats(updatedChats);
+          setCurrentChatId(updatedChats.length ? updatedChats[0].id : null);
+        } else {
+          console.error("Failed to delete chat:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error deleting chat:", error);
+      }
     }
   };
 
@@ -160,10 +278,8 @@ const SyllaBot = () => {
   };
 
   const currentChat = chats.find((chat) => chat.id === currentChatId);
-
   const shouldShowIntroduction =
-    currentChatId === null ||
-    (currentChat && currentChat.messages.length === 0);
+    currentChatId === null || !currentChat || currentMessages.length === 0;
 
   return (
     <div className="syllabot-container">
@@ -185,28 +301,30 @@ const SyllaBot = () => {
             </div>
           ) : (
             <div className="chat-area">
-              {currentChat?.messages.map((msg, index) => (
-                <div key={index} className="message">
-                  <div className="message-content">{msg.content}</div>
-                  {msg.title && (
-                    <div className="message-title">{msg.title}</div>
-                  )}
-                  {msg.topics && (
-                    <div className="message-topics">{msg.topics}</div>
-                  )}
-                  {msg.link && (
-                    <div className="message-link">
-                      <a
-                        href={msg.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {msg.link}
-                      </a>
-                    </div>
-                  )}
-                </div>
-              ))}
+              {currentChat &&
+                currentChat.messages &&
+                currentChat.messages.map((msg, index) => (
+                  <div key={index} className="message">
+                    <div className="message-content">{msg.content}</div>
+                    {msg.title && (
+                      <div className="message-title">{msg.title}</div>
+                    )}
+                    {msg.topics && (
+                      <div className="message-topics">{msg.topics}</div>
+                    )}
+                    {msg.link && (
+                      <div className="message-link">
+                        <a
+                          href={msg.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {msg.link}
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                ))}
             </div>
           )}
           <div className="input-area-container">
@@ -233,7 +351,7 @@ const SyllaBot = () => {
                 }}
               ></input>
               <button
-                onClick={handleSend}
+                // onClick={handleSend}
                 className="input-area-button submit-button"
               >
                 <ion-icon name="send"></ion-icon>
