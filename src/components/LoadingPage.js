@@ -1,11 +1,8 @@
 import React from "react";
+import "../styles/LoadingPage.css";
 
 const LoadingPage = () => {
-  return (
-    <div>
-      <h2>Loading...</h2>
-    </div>
-  );
+  return <div className="loading-bar"></div>;
 };
 
 export default LoadingPage;
