@@ -3,7 +3,7 @@ import instance from "../axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/SignUpPage.css";
 
-const SignUpPage = () => {
+const SignUpPage = ({ setSnackbar }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -39,9 +39,14 @@ const SignUpPage = () => {
           },
         }
       );
+      setSnackbar({
+        message: "Signup successful! Please log in.",
+        type: "success",
+      });
       navigate("/");
     } catch (err) {
       setError(err.message);
+      setSnackbar({ message: err.message, type: "error" });
     }
   };
 

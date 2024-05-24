@@ -81,12 +81,11 @@
 }
 
 .delete-chat-button {
-  background-color: #e03131;
-
+  background-color: #f03e3e;
   color: #ffffff;
 }
 
 .delete-chat-button:hover,
 .delete-chat-button:active {
-  background-color: #c92a2a;
+  background-color: #e03131;
 }

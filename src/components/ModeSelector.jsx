@@ -20,12 +20,6 @@ const ModeSelector = ({ mode, setMode }) => {
       >
         Syllabus Generation
       </button>
-      {/* <button
-        className={mode === "precise" ? "selected" : ""}
-        onClick={() => handleModeChange("precise")}
-      >
-        Precise
-      </button> */}
     </div>
   );
 };
