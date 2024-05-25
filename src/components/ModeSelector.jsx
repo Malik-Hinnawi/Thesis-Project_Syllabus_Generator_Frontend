@@ -4,6 +4,7 @@ import React, { useState } from "react";
 const ModeSelector = ({ mode, setMode }) => {
   const handleModeChange = (selectedMode) => {
     setMode(selectedMode);
+    console.log(selectedMode);
   };
 
   return (

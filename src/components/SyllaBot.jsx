@@ -80,7 +80,7 @@ const SyllaBot = () => {
 
         if (response.status === 200) {
           setCurrentMessages(response.data);
-          console.log(response.data);
+          // console.log(response.data);
         } else {
           console.error("Failed to fetch messages:", response.statusText);
         }
@@ -229,8 +229,14 @@ const SyllaBot = () => {
           content: userInput,
         };
 
+        const newMessage = { content: userInput, sender: "user" };
+
         try {
           const endpoint = `chat/${chatId}/syllabus-generator`;
+          // const endpoint =
+          //   mode === 1
+          //     ? `chat/${chatId}/q-and-a`
+          //     : `chat/${chatId}/syllabus-generator`;
 
           const messageResponse = await instance.post(
             endpoint,
@@ -243,12 +249,24 @@ const SyllaBot = () => {
             }
           );
 
-          if (messageResponse.status === 200) {
-            const data = messageResponse.data;
-            console.log("Message successfully sent:", data);
+          if (messageResponse.status === 201) {
+            console.log(messageResponse.data.content);
+            const botMessages = messageResponse.data.map((msg) => ({
+              ...msg,
+              sender: "bot",
+            }));
 
-            const updatedMessages = [...currentMessages, ...data];
+            const updatedMessages = [
+              ...currentMessages,
+              newMessage,
+              ...botMessages,
+            ];
             setCurrentMessages(updatedMessages);
+            // const data = messageResponse.data;
+            // console.log("Message successfully sent:", data);
+
+            // const updatedMessages = [...currentMessages, ...data];
+            // setCurrentMessages(updatedMessages);
 
             const updatedChats = chats.map((chat) =>
               chat.id === chatId ? { ...chat, messages: updatedMessages } : chat
@@ -371,25 +389,8 @@ const SyllaBot = () => {
               {currentChat &&
                 currentChat.messages &&
                 currentChat.messages.map((msg, index) => (
-                  <div key={index} className="message">
-                    <div className="message-content">{msg.content}</div>
-                    {msg.title && (
-                      <div className="message-title">{msg.title}</div>
-                    )}
-                    {msg.topics && (
-                      <div className="message-topics">{msg.topics}</div>
-                    )}
-                    {msg.link && (
-                      <div className="message-link">
-                        <a
-                          href={msg.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {msg.link}
-                        </a>
-                      </div>
-                    )}
+                  <div key={index} className={`message ${msg.sender}`}>
+                    {msg.content}
                   </div>
                 ))}
             </div>
