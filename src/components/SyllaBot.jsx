@@ -62,6 +62,37 @@ const SyllaBot = () => {
 
   /* GETTING ALL MESSAGES FOR THE SELECTED CHAT */
 
+  const formatMessageContent = (msg) => {
+    const { chapter, content, estimated_time, link, title, topics } = msg;
+    let formattedContent = "";
+
+    if (content) {
+      formattedContent += `${content}<br/>`;
+    }
+
+    if (chapter) {
+      formattedContent += `<b>Chapter:</b> ${chapter}<br/>`;
+    }
+
+    if (estimated_time) {
+      formattedContent += `<b>Estimated Time:</b> ${estimated_time} hours<br/>`;
+    }
+
+    if (title) {
+      formattedContent += `<b>Title:</b> ${title}<br/>`;
+    }
+
+    if (topics) {
+      formattedContent += `<b>Topics:</b> ${topics}<br/>`;
+    }
+
+    if (link) {
+      formattedContent += `<b>Link:</b> <a href="${link}" target="_blank">${link}</a><br/>`;
+    }
+
+    return formattedContent.trim();
+  };
+
   useEffect(() => {
     const fetchMessages = async () => {
       if (currentChatId === null) return;
@@ -96,6 +127,7 @@ const SyllaBot = () => {
 
               const responseMessages = msg.response_messages.map((respMsg) => ({
                 ...respMsg,
+                content: formatMessageContent(respMsg),
                 sender: "bot",
               }));
 
@@ -186,11 +218,6 @@ const SyllaBot = () => {
               const content = responseMessages[1].response_messages[0].content;
               console.log("Response message content:", content);
             }
-            /* */
-
-            /* EXPERIMENTAL */
-            /* */
-            /* */
 
             const botMessages = messageResponse.data.map((msg) => ({
               ...msg,
@@ -326,7 +353,7 @@ const SyllaBot = () => {
                 currentChat.messages &&
                 currentChat.messages.map((msg, index) => (
                   <div key={index} className={`message ${msg.sender}`}>
-                    {msg.content}
+                    <div dangerouslySetInnerHTML={{ __html: msg.content }} />
                   </div>
                 ))}
             </div>
