@@ -84,14 +84,6 @@ const SyllaBot = () => {
 
         if (response.status === 200) {
           console.log(response.data);
-          const responseMessages = response.data;
-          if (
-            responseMessages.length > 0 &&
-            responseMessages[1].response_messages.length > 0
-          ) {
-            const title = responseMessages[1].response_messages[0].title;
-            console.log(title);
-          }
           const messages = response.data
             .map((msg) => {
               const formattedMessage = {
