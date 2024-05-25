@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
 import Snackbar from "./components/Snackbar";
 import SyllaBot from "./components/SyllaBot";
@@ -38,20 +39,38 @@ import "./App.css";
 
 const App = () => {
   const [snackbar, setSnackbar] = useState({ message: "", type: "" });
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
     <div className="container">
       <Router>
-        <AuthProviderWrapper setSnackbar={setSnackbar} />
+        <AuthProviderWrapper
+          setSnackbar={setSnackbar}
+          setIsLoading={setIsLoading}
+        />
         {snackbar.message && (
           <Snackbar message={snackbar.message} type={snackbar.type} />
         )}
+        {isLoading && <LoadingPage />}
       </Router>
     </div>
   );
 };
 
-const AuthProviderWrapper = ({ setSnackbar }) => {
+const AuthProviderWrapper = ({ setSnackbar, setIsLoading }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleNavigation = () => {
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500); // Simulate a loading time
+    };
+
+    handleNavigation();
+  }, [location, setIsLoading]);
 
   return (
     <AuthProvider navigate={navigate} setSnackbar={setSnackbar}>
@@ -72,7 +91,7 @@ const AuthProviderWrapper = ({ setSnackbar }) => {
 };
 
 const ProtectedRoute = ({ element, ...rest }) => {
-  const { isAuthenticated } = React.useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
   if (isAuthenticated === null) {
     return <LoadingPage />;
