@@ -57,15 +57,15 @@
 }
 
 .message.user {
-  background-color: #e6fcf5; /* Color for user messages */
+  background-color: #ffffff;
   font-weight: bold;
   color: #087f5b;
   align-self: flex-end; /* Align user messages to the right */
 }
 
 .message.bot {
-  background-color: #087f5b; /* Color for bot messages */
-  color: #ffffff;
+  background-color: #d3f9d8; /* Color for bot messages */
+  color: #2b8a3e;
   align-self: flex-start; /* Align bot messages to the left */
 }
 
