@@ -7,30 +7,19 @@ import { AuthContext } from "../contexts/AuthContext"; // Import AuthContext
 import instance from "../axios";
 
 const SyllaBot = () => {
-  // const [chats, setChats] = useState([
-  //   { id: 1, title: "Chat Number One!", messages: [] },
-  //   { id: 2, title: "Chat Number Two!", messages: [] },
-  //   { id: 3, title: "Chat Number Three!", messages: [] },
-  //   { id: 4, title: "Chat Number Four!", messages: [] },
-  // ]);
-  // const [currentChatId, setCurrentChatId] = useState(null);
-  // const [userInput, setUserInput] = useState("");
-
   const [chats, setChats] = useState([]);
   const [currentChatId, setCurrentChatId] = useState(() => {
     const storedChatId = localStorage.getItem("currentChatId");
     return storedChatId ? parseInt(storedChatId) : null;
   });
-
   const [currentMessages, setCurrentMessages] = useState([]);
   const [userInput, setUserInput] = useState("");
   const [mode, setMode] = useState(1);
   const [newChat, setNewChat] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const { logout } = useContext(AuthContext);
 
-  /* GETTING AL CHATS FOR THE CURRENT USER */
+  /* GETTING ALL CHATS FOR THE CURRENT USER */
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -66,28 +55,61 @@ const SyllaBot = () => {
     const { chapter, content, estimated_time, link, title, topics } = msg;
     let formattedContent = "";
 
+    // if (content) {
+    //   formattedContent += `${content
+    //     .split(",")
+    //     .map((line) => `${line}<br/>`)
+    //     .join("")}<br/>`;
+    // }
+
     if (content) {
-      formattedContent += `${content}<br/>`;
+      // Regular expression pattern to extract the desired part
+      const pattern = /FROM '(.*?)'/;
+
+      // Extract the part from the content
+      const extractedPart = content.match(pattern);
+
+      // Check if the part is extracted successfully
+      if (extractedPart) {
+        // Add the extracted part to the formatted content
+        formattedContent += `<strong>${extractedPart[0]}</strong><br/>`;
+      }
+
+      // Split the remaining content by comma and format each line
+      // formattedContent += `${content
+      //   .replace(pattern, "") // Remove the extracted part
+      //   .split(",")
+      //   .map((line) => `${line.trim()}<br/>`)
+      //   .join("")}<br/>`;
     }
 
+    formattedContent.trim();
+
     if (chapter) {
-      formattedContent += `<b>Chapter:</b> ${chapter}<br/>`;
+      formattedContent += `<br/><b>Chapter:</b> ${chapter}<br/>`;
     }
 
     if (estimated_time) {
-      formattedContent += `<b>Estimated Time:</b> ${estimated_time} hours<br/>`;
+      formattedContent += `<br/><b>Estimated Time:</b> ${estimated_time} hours<br/>`;
     }
 
     if (title) {
-      formattedContent += `<b>Title:</b> ${title}<br/>`;
+      formattedContent += `<br/><b>Title:</b> <br/>${title}<br/>`;
     }
 
     if (topics) {
-      formattedContent += `<b>Topics:</b> ${topics}<br/>`;
+      const topicsList = topics
+        .split(",")
+        .map(
+          (topic) =>
+            `<li style="margin-left: 20px; text-transform: capitalize;"">${topic.trim()}</li>`
+        )
+        .join("");
+      formattedContent += `<br/><b>Topics:</b><br/><ul>${topicsList}</ul>`;
     }
 
     if (link) {
-      formattedContent += `<b>Link:</b> <a href="${link}" target="_blank">${link}</a><br/>`;
+      formattedContent += `<br/><b>Link:</b> <a href="${link}" target="_blank">${link}</a><br/>`;
     }
 
     return formattedContent.trim();
@@ -148,6 +170,8 @@ const SyllaBot = () => {
       } catch (error) {
         console.error("Error fetching messages:", error);
       }
+
+      setLoading(false);
     };
 
     fetchMessages();
@@ -180,17 +204,6 @@ const SyllaBot = () => {
         const newMessage = { content: userInput, sender: "user" };
 
         try {
-          // let endpoint;
-
-          // if (mode === 0) {
-          //   endpoint = `chat/${chatId}/syllabus-generator`;
-          // } else if (mode === 1) {
-          //   endpoint = `chat/${chatId}/q-and-a`;
-          // } else {
-          //   // Handle other cases, such as setting a default value or throwing an error
-          //   endpoint = "Invalid mode";
-          // }
-          // const endpoint = `chat/${chatId}/syllabus-generator`;
           const endpoint =
             mode === 0
               ? `chat/${chatId}/syllabus-generator`
@@ -208,26 +221,16 @@ const SyllaBot = () => {
           );
 
           if (messageResponse.status === 201) {
-            /* ADDITIONAL */
-            /* */
-            const responseMessages = messageResponse.data;
-            if (
-              responseMessages.length > 0 &&
-              responseMessages[1].response_messages.length > 0
-            ) {
-              const content = responseMessages[1].response_messages[0].content;
-              console.log("Response message content:", content);
-            }
-
-            const botMessages = messageResponse.data.map((msg) => ({
+            const responseMessages = messageResponse.data.map((msg) => ({
               ...msg,
+              content: formatMessageContent(msg),
               sender: "bot",
             }));
 
             const updatedMessages = [
               ...currentMessages,
               newMessage,
-              ...botMessages,
+              ...responseMessages,
             ];
             setCurrentMessages(updatedMessages);
 
