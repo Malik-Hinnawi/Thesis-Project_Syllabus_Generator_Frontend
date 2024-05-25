@@ -26,6 +26,7 @@ const SyllaBot = () => {
   const [userInput, setUserInput] = useState("");
   const [mode, setMode] = useState(1);
   const [newChat, setNewChat] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { logout } = useContext(AuthContext);
 
@@ -65,9 +66,12 @@ const SyllaBot = () => {
     const fetchMessages = async () => {
       if (currentChatId === null) return;
 
+      setLoading(true);
+
       const token = localStorage.getItem("token");
       if (!token) {
         console.error("No token found in local storage");
+        setLoading(false);
         return;
       }
 
@@ -79,8 +83,41 @@ const SyllaBot = () => {
         });
 
         if (response.status === 200) {
-          setCurrentMessages(response.data);
-          // console.log(response.data);
+          console.log(response.data);
+          const responseMessages = response.data;
+          if (
+            responseMessages.length > 0 &&
+            responseMessages[1].response_messages.length > 0
+          ) {
+            const title = responseMessages[1].response_messages[0].title;
+            console.log(title);
+          }
+          const messages = response.data
+            .map((msg) => {
+              const formattedMessage = {
+                id: msg.id,
+                chat_id: msg.chat_id,
+                content: msg.content,
+                timestamp: msg.timestamp,
+                sender: "user",
+              };
+
+              const responseMessages = msg.response_messages.map((respMsg) => ({
+                ...respMsg,
+                sender: "bot",
+              }));
+
+              return [formattedMessage, ...responseMessages];
+            })
+            .flat();
+
+          setCurrentMessages(messages);
+
+          const updatedChats = chats.map((chat) =>
+            chat.id === currentChatId ? { ...chat, messages } : chat
+          );
+
+          setChats(updatedChats);
         } else {
           console.error("Failed to fetch messages:", response.statusText);
         }
@@ -99,119 +136,6 @@ const SyllaBot = () => {
       setCurrentChatId(null);
     }
   }, [chats]);
-
-  // const handleSend = async () => {
-  //   if (userInput.trim()) {
-  //     let chatId = currentChatId;
-
-  //     const token = localStorage.getItem("token");
-  //     if (!token) {
-  //       console.error("No token found in local storage");
-  //       return;
-  //     }
-
-  //     if (currentChatId === null) {
-  //       try {
-  //         const chatCreationResponse = await instance.post(
-  //           "chat/user/chats",
-  //           { type: mode },
-  //           {
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //               Authorization: `Bearer ${token}`,
-  //             },
-  //           }
-  //         );
-
-  //         chatId = chatCreationResponse.data.id;
-  //         console.log(chatId);
-  //         setNewChat(true);
-
-  //         const newChat = {
-  //           id: chatId,
-  //           title: `Chat Number ${chatId}!`,
-  //           messages: [],
-  //         };
-  //         setChats([...chats, newChat]);
-  //         setCurrentChatId(chatId);
-  //       } catch (error) {
-  //         console.error("Error creating new chat:", error);
-  //         return;
-  //       }
-  //     }
-
-  //     const messagePayload = {
-  //       content: userInput,
-  //     };
-
-  //     try {
-  //       const endpoint =
-  //         mode === 1
-  //           ? `chat/${chatId}/q-and-a`
-  //           : `chat/${chatId}/syllabus-generator`;
-
-  //       const messageResponse = await instance.post(endpoint, messagePayload, {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-
-  //       if (messageResponse.status === 201) {
-  //         const data = messageResponse.data;
-  //         console.log("Message successfully sent:", data);
-
-  //         const {
-  //           id,
-  //           chat_id,
-  //           message_id,
-  //           title,
-  //           link,
-  //           content,
-  //           chapter,
-  //           estimated_time,
-  //           topics,
-  //         } = data;
-
-  //         const newMessage = {
-  //           id,
-  //           chat_id,
-  //           message_id,
-  //           title,
-  //           link,
-  //           content,
-  //           chapter,
-  //           estimated_time,
-  //           topics,
-  //         };
-
-  //         const updatedChats = chats.map((chat) =>
-  //           chat.id === chatId
-  //             ? { ...chat, messages: [...chat.messages, newMessage] }
-  //             : chat
-  //         );
-
-  //         setChats(updatedChats);
-  //         setUserInput(""); // Clear the input field
-  //       } else {
-  //         console.error("Failed to send message:", messageResponse.statusText);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error while sending message:", error);
-  //     }
-  //   }
-  // };
-
-  // const handleNewChat = () => {
-  //   const newChatId = chats.length ? chats[chats.length - 1].id + 1 : 1;
-  //   const newChat = {
-  //     id: newChatId,
-  //     title: `Chat Number ${newChatId}!`,
-  //     messages: [],
-  //   };
-  //   setChats([...chats, newChat]);
-  //   setCurrentChatId(newChatId);
-  // };
 
   /* HANDLE SENDING A NEW MESSAGE */
   const handleSend = async () => {
@@ -232,11 +156,21 @@ const SyllaBot = () => {
         const newMessage = { content: userInput, sender: "user" };
 
         try {
-          const endpoint = `chat/${chatId}/syllabus-generator`;
-          // const endpoint =
-          //   mode === 1
-          //     ? `chat/${chatId}/q-and-a`
-          //     : `chat/${chatId}/syllabus-generator`;
+          // let endpoint;
+
+          // if (mode === 0) {
+          //   endpoint = `chat/${chatId}/syllabus-generator`;
+          // } else if (mode === 1) {
+          //   endpoint = `chat/${chatId}/q-and-a`;
+          // } else {
+          //   // Handle other cases, such as setting a default value or throwing an error
+          //   endpoint = "Invalid mode";
+          // }
+          // const endpoint = `chat/${chatId}/syllabus-generator`;
+          const endpoint =
+            mode === 0
+              ? `chat/${chatId}/syllabus-generator`
+              : `chat/${chatId}/q-and-a`;
 
           const messageResponse = await instance.post(
             endpoint,
@@ -250,7 +184,22 @@ const SyllaBot = () => {
           );
 
           if (messageResponse.status === 201) {
-            console.log(messageResponse.data.content);
+            /* ADDITIONAL */
+            /* */
+            const responseMessages = messageResponse.data;
+            if (
+              responseMessages.length > 0 &&
+              responseMessages[1].response_messages.length > 0
+            ) {
+              const content = responseMessages[1].response_messages[0].content;
+              console.log("Response message content:", content);
+            }
+            /* */
+
+            /* EXPERIMENTAL */
+            /* */
+            /* */
+
             const botMessages = messageResponse.data.map((msg) => ({
               ...msg,
               sender: "bot",
@@ -262,11 +211,6 @@ const SyllaBot = () => {
               ...botMessages,
             ];
             setCurrentMessages(updatedMessages);
-            // const data = messageResponse.data;
-            // console.log("Message successfully sent:", data);
-
-            // const updatedMessages = [...currentMessages, ...data];
-            // setCurrentMessages(updatedMessages);
 
             const updatedChats = chats.map((chat) =>
               chat.id === chatId ? { ...chat, messages: updatedMessages } : chat
