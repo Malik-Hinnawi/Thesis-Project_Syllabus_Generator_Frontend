@@ -1,6 +1,6 @@
 // src/components/Snackbar.js
 import React from "react";
-import "../styles/Snackbar.css";
+import "../styles/SnackBar.css";
 
 const Snackbar = ({ message, type }) => {
   let icon;
